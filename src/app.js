@@ -12,6 +12,7 @@ class App extends Component {
       userInfo: null,
       repos: [],
       starred: [],
+      isFetching: false,
     };
   }
 
@@ -21,6 +22,10 @@ class App extends Component {
     const ENTER = 13;
 
     if (keycode === ENTER) {
+      // e.target.disabled = true;
+      this.setState({
+        isFetching: true,
+      });
       ajax()
         .get(`https://api.github.com/users/${value}`)
         .then((result) => {
@@ -33,10 +38,16 @@ class App extends Component {
               followers: result.followers,
               photo: result.avatar_url,
             },
+            repos: [],
+            starred: [],
           });
           console.log(result.repos_url);
+        })
+        .always(() => {
+          this.setState({
+            isFetching: false,
+          });
         });
-      // console.log("keyup", e.target.value);
     }
   };
 
@@ -53,7 +64,9 @@ class App extends Component {
 
   getStarred = () => {
     ajax()
-      .get(`https://api.github.com/users/${this.state.userInfo.userName}/repos`)
+      .get(
+        `https://api.github.com/users/${this.state.userInfo.userName}/starred`
+      )
       .then((result) => {
         this.setState({
           starred: result,
@@ -65,8 +78,21 @@ class App extends Component {
   render() {
     return (
       <div className="App">
-        <Nav handleSearch={this.handleSearch} />
+        <Nav
+          handleSearch={this.handleSearch}
+          isFetching={this.state.isFetching}
+        />
         <div className="container">
+          {this.state.isFetching && (
+            <div class="sk-chase">
+              <div class="sk-chase-dot"></div>
+              <div class="sk-chase-dot"></div>
+              <div class="sk-chase-dot"></div>
+              <div class="sk-chase-dot"></div>
+              <div class="sk-chase-dot"></div>
+              <div class="sk-chase-dot"></div>
+            </div>
+          )}
           <User
             userInfo={this.state.userInfo}
             repos={this.state.repos}

@@ -8,7 +8,7 @@ const Repos = ({ title, repos }) => {
       <h2>{title}</h2>
       <ul>
         {repos.map((repo) => (
-          <li key={repo.html_url}>
+          <li key={repo.id}>
             <a href={repo.html_url}>{repo.name}</a>
           </li>
         ))}

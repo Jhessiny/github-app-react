@@ -20,14 +20,14 @@ module.exports = validate({
 
   plugins: [new webpack.HotModuleReplacementPlugin()],
   module: {
-    preLoaders: [
-      {
-        test: /\.js$/,
-        exclude: /node_modules/,
-        include: /src/,
-        loader: "standard",
-      },
-    ],
+    // preLoaders: [
+    //   {
+    //     test: /\.js$/,
+    //     exclude: /node_modules/,
+    //     include: /src/,
+    //     loader: "standard",
+    //   },
+    // ],
     loaders: [
       {
         test: /\.js$/,
